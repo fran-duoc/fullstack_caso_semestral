@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "historial_diagnostico")
+@Table(name = "historial_diagnosticos")
 public class HistorialDiagnostico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +34,7 @@ public class HistorialDiagnostico {
     @Column(name = "id_mascota")
     private Integer idMascota;
 
-    @NotBlank(message = "El RUT del funcionario es obligatorio")
-    @Size(max = 12, message = "El RUT del funcionario no puede superar los 12 caracteres")
-    @Column(name = "rut_funcionario")
-    private String rutFuncionario;
+    @NotNull(message = "El ID del funcionario es obligatorio")
+    @Column(name = "id_funcionario")
+    private Integer idFuncionario;
 }

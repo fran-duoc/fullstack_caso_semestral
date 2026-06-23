@@ -1,6 +1,16 @@
 package com.sanos_y_salvos.mascotas.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
+@JsonPropertyOrder({
+        "idDuenio",
+        "run",
+        "dvrun",
+        "pNombre",
+        "apPaterno",
+        "email",
+        "fono",
+})
 
 @Data
 public class DuenioDTO {

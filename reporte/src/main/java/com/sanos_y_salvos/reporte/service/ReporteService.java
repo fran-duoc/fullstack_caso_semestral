@@ -40,15 +40,17 @@ public class ReporteService {
     @Autowired
     private ComunaClient comunaClient;
 
-    public ReporteDetalleDto getReporteDetalle(Integer id){
-
+    public ReporteDetalleDto getReporteDetalle(Integer id) {
 
         Reporte reporte = reporteRepository.findById(id).orElse(null);
 
-        ComunaDTO comuna = comunaClient.obtenerComuna(reporte.getIdComuna());
+        if (reporte == null) {
+            return null;
+        }
+
+        ComunaDTO comuna = comunaClient.obtenerComunaDto(reporte.getIdComuna());
 
         ReporteDetalleDto dto = new ReporteDetalleDto();
-
         dto.setIdReporte(reporte.getIdReporte());
         dto.setTipoReporte(reporte.getTipoReporte());
         dto.setFechaSuceso(reporte.getFechaSuceso());
@@ -57,6 +59,5 @@ public class ReporteService {
         dto.setComuna(comuna);
 
         return dto;
-
     }
 }

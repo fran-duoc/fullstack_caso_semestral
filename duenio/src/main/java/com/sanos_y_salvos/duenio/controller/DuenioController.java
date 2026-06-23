@@ -59,10 +59,12 @@ public class DuenioController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8090/api/v1/duenios/{id}", "buscar-duenio-por-su-id")
+                Link.of("http://localhost:8090/api/v1/duenios/{id}",
+                        "buscar-duenio-por-su-id")
         );
         model.add(
-                Link.of("http://localhost:8090/api/v1/duenios/{id}/comunas", "buscar-duenios-con-su-comuna")
+                Link.of("http://localhost:8090/api/v1/duenios/{id}/detalle",
+                        "buscar-duenios-con-su-comuna")
         );
         return model;
     }
@@ -94,7 +96,8 @@ public class DuenioController {
                 )
         );
         model.add(
-                Link.of("http://localhost:8090/api/v1/duenios/{id}/comuna", "mostrar-duenio-con-su-comuna")
+                Link.of("http://localhost:8090/api/v1/duenios/{id}/detalle",
+                        "mostrar-duenio-con-su-comuna")
         );
         return model;
     }
@@ -145,32 +148,28 @@ public class DuenioController {
 
 
 
-    @Operation(summary = "obtiene la informacion de dueños junto a su comuna")
-    @GetMapping("/{id}/comunas")
+    @Operation(summary = "obtiene la informacion de dueño junto a su comuna")
+    @GetMapping("/{id}/detalle")
     public ResponseEntity<EntityModel<DuenioDetalleDTO>> listarDetalles(@PathVariable Integer id) {
-            DuenioDetalleDTO detalle = duenioService.getDuenioConComuna(id);
+        DuenioDetalleDTO detalle = duenioService.getDuenioConComuna(id);
 
-            if (detalle == null) {
-                return ResponseEntity.noContent().build();
-            }
+        EntityModel<DuenioDetalleDTO> model = EntityModel.of(detalle);
 
-            EntityModel<DuenioDetalleDTO> model = EntityModel.of(detalle);
+        //version automatica
+        model.add(
+                linkTo(methodOn(DuenioController.class).listarDetalles(id)).withSelfRel()
+        );
+        //version manual
+        model.add(
+                Link.of("http://localhost:8090/api/v1/duenio/{id}",
+                        "buscar-duenio-por-su-id")
+        );
+        model.add(
+                Link.of("http://localhost:8090/api/v1/duenio",
+                        "todos-los-duenios")
+        );
 
-            // Versión automática
-            model.add(
-                    linkTo(methodOn(DuenioController.class).listarDetalles(id)).withSelfRel()
-            );
-            // Versión manual
-            model.add(
-                    Link.of("http://localhost:8090/api/v1/duenio/{id}", "buscar-duenio-por-su-id")
-            );
-            model.add(
-                    Link.of("http://localhost:8090/api/v1/duenio", "todos-los-duenios")
-            );
-
-            return ResponseEntity.ok(model);
-
-
+        return ResponseEntity.ok(model);
     }
     //public DuenioDetalleDTO getDuenioConComuna() {
     //  return duenioService.getDuenioConComuna();

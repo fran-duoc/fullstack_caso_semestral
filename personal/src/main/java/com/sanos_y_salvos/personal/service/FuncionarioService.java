@@ -43,16 +43,13 @@ public class FuncionarioService {
     @Autowired
     private InstitucionClient institucionClient;
 
-    public PersonalDetalleDTO getPersonalConInsti(Integer id){
+    public PersonalDetalleDTO getPersonalConInsti(Integer id) {
+        Funcionario funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionario no encontrado con id: " + id));
 
-        Funcionario funcionario =
-                funcionarioRepository.findById(id).orElse(null);
+        InstitucionDTO institucion = institucionClient.obtenerInstiDto(funcionario.getIdInstitucion());
 
-        InstitucionDTO institucion =
-                institucionClient.obtenerInstitucion(funcionario.getIdInstitucion());
-
-        PersonalDetalleDTO dto =
-                new PersonalDetalleDTO();
+        PersonalDetalleDTO dto = new PersonalDetalleDTO();
         dto.setIdFuncionario(funcionario.getIdFuncionario());
         dto.setRun(funcionario.getRun());
         dto.setDvrun(funcionario.getDvrun());
@@ -63,7 +60,8 @@ public class FuncionarioService {
         dto.setTelefono(funcionario.getTelefono());
         dto.setEmail(funcionario.getEmail());
         dto.setSede(funcionario.getSede());
-        dto.setIdCargo(funcionario.getCargo().getIdCargo());
+
+        dto.setIdCargo(funcionario.getCargo() != null ? funcionario.getCargo().getIdCargo() : null);
 
         dto.setInstitucion(institucion);
 

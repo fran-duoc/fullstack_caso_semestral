@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class ComunaDTO {
     private Integer idComuna;
-    private String nombreColumna;
+    private String nombreComuna;
 }

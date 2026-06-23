@@ -41,11 +41,12 @@ public class AlertaController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8079/api/v1/alertas/{id}", "buscar-alerta-por-su-id")
+                Link.of("http://localhost:8079/api/v1/alertas/{id}",
+                        "buscar-alerta-por-su-id")
         );
         model.add(
                 Link.of("http://localhost:8079/api/v1/alertas/{id}/detalle",
-                        "buscar-alerta-con-detalles")
+                        "buscar-alerta-con-reporte")
         );
 
         return model;
@@ -74,7 +75,7 @@ public class AlertaController {
         );
         model.add(
                 Link.of("http://localhost:8079/api/v1/alertas/{id}/detalle",
-                        "buscar-alerta-con-detalles")
+                        "buscar-alerta-con-reporte")
         );
         return model;
     }
@@ -117,30 +118,28 @@ public class AlertaController {
         }
     }
 
-    //crear la conexion con duenio
-    @Operation(summary = "Obtiene la información de una alerta junto a su dueño por ID")
+    //crear la conexion con reporte
+    @Operation(summary = "Obtiene la información de una alerta junto a su reporte por ID")
     @GetMapping("/{id}/detalle")
     public ResponseEntity<EntityModel<AlertaDetalleDto>> getDetalleAlerta(
             @PathVariable Integer id) {
 
-        AlertaDetalleDto detalle = alertaService.getAlertaConDuenio(id);
+        AlertaDetalleDto detalle = alertaService.getAlertaReporte(id);
 
         EntityModel<AlertaDetalleDto> model = EntityModel.of(detalle);
-
+        //version automatica
         model.add(
                 linkTo(methodOn(AlertaController.class).getDetalleAlerta(id))
                         .withSelfRel()
         );
+        //version manual
         model.add(
-                linkTo(methodOn(AlertaController.class).getDetalleAlerta(id))
-                        .withRel("buscar-alerta-detalle")
+                Link.of("http://localhost:8079/api/v1/alertas",
+                        "todas-las-alertas")
         );
         model.add(
-                linkTo(methodOn(AlertaController.class).getAlerta(id))
-                        .withRel("alerta-base")
-        );
-        model.add(
-                Link.of("http://localhost:8079/api/v1/alertas", "todas-las-alertas")
+                Link.of("http://localhost:8079/api/v1/alertas/{id}",
+                        "buscar-alerta-por-su-id")
         );
 
         return ResponseEntity.ok(model);

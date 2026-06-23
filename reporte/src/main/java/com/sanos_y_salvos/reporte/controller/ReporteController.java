@@ -43,11 +43,13 @@ public class ReporteController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8087/api/v1/reportes/{id}", "buscar-reportes-por-su-id")
+                Link.of("http://localhost:8087/api/v1/reportes/{id}",
+                        "buscar-reportes-por-su-id")
         );
 
         model.add(
-                Link.of("http://localhost:8087/api/v1/reportes/detalles", "reportes-con-detalles")
+                Link.of("http://localhost:8087/api/v1/reportes/{id}/detalle",
+                        "reportes-con-comuna")
         );
 
         return model;
@@ -72,11 +74,13 @@ public class ReporteController {
         );
 
         model.add(
-                Link.of("http://localhost:8087/api/v1/reportes", "todos-los-reportes")
+                Link.of("http://localhost:8087/api/v1/reportes",
+                        "todos-los-reportes")
         );
 
         model.add(
-                Link.of("http://localhost:8087/api/v1/reportes/detalles", "reportes-con-detalles")
+                Link.of("http://localhost:8087/api/v1/reportes/{id}/detalle",
+                        "reportes-con-comuna")
         );
         return model;
     }
@@ -125,25 +129,29 @@ public class ReporteController {
         }
     }
 
-    @Operation(summary = "mostrar informacion de reportes junto a su comuna")
-    @GetMapping("/detalles")
-    public EntityModel<ReporteDetalleDto> getReporteDetalleDto(@PathVariable Integer id) {
+    @Operation(summary = "Mostrar información de reportes junto a su comuna")
+    @GetMapping("/{id}/detalle")
+    public ResponseEntity<EntityModel<ReporteDetalleDto>> getReporteDetalleDto(@PathVariable Integer id) {
+
         ReporteDetalleDto detalle = reporteService.getReporteDetalle(id);
+
         EntityModel<ReporteDetalleDto> model = EntityModel.of(detalle);
+        //version automatica
         model.add(
                 linkTo(methodOn(ReporteController.class).getReporteDetalleDto(id))
                         .withSelfRel()
         );
-
+        //version manual
         model.add(
-                Link.of("http://localhost:8087/api/v1/reportes", "todos-los-reportes")
+                Link.of("http://localhost:8087/api/v1/reportes",
+                        "todos-los-reportes")
+        );
+        model.add(
+                Link.of("http://localhost:8087/api/v1/reportes/{id}",
+                        "buscar-reportes-por-su-id")
         );
 
-        model.add(
-                Link.of("http://localhost:8087/api/v1/reportes/{id}", "buscar-reportes-por-su-id")
-        );
-
-        return model;
+        return ResponseEntity.ok(model);
     }
     //public ReporteDetalleDto getReporteDetalleDto(){return reporteService.getReporteDetalle();}
 

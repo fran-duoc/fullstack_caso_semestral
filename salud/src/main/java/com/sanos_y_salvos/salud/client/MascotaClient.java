@@ -8,17 +8,15 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class MascotaClient {
-
     @Autowired
     private WebClient.Builder webClientBuilder;
 
-    public MascotaDto obtenerMascota(Integer mascotaId) {
+    public MascotaDto obtenerMascotaDto(Integer id) {
         return webClientBuilder.build()
                 .get()
-                .uri("http://localhost:8083/api/v1/mascotas/{id}", mascotaId)
+                .uri("http://localhost:8085/api/v1/mascotas/" + id)
                 .retrieve()
                 .bodyToMono(MascotaDto.class)
                 .block();
     }
-
 }

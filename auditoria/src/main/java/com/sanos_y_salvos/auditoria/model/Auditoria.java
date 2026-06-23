@@ -39,7 +39,7 @@ public class Auditoria {
     @Size(max = 150, message = "La acción no puede superar los 150 caracteres")
     private String accion;
 
-    @NotNull(message = "El IP de la direccion es obligatorio")
+    @NotNull(message = "El ID de la direccion es obligatorio")
     @Column(name = "id_comuna")
     private Integer idComuna;
 

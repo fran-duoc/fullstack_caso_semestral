@@ -19,7 +19,7 @@ public class Comuna {
     private Integer idComuna;
     @NotBlank(message = "El nombre de la comuna no puede estar vacío.")
     @Column(name = "nombre_comuna")
-    private String nombreColumna;
+    private String nombreComuna;
 
 
     @ManyToOne

@@ -8,11 +8,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class ComunaClient {
     @Autowired
-    private WebClient webClient;
+    private WebClient.Builder webClientBuilder;
 
-    public ComunaDTO obtenerComuna(Integer idComuna){
-        return webClient.get()
-                .uri("http://localhost:8085/api/v1/comuna/{id}", idComuna)
+    public ComunaDTO obtenerComunaDto(Integer id) {
+        return webClientBuilder.build()
+                .get()
+                .uri("http://localhost:8088/api/v1/comunas/" + id)
                 .retrieve()
                 .bodyToMono(ComunaDTO.class)
                 .block();

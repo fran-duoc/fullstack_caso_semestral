@@ -30,17 +30,16 @@ public class HistorialDiagnosticoService {
 
     @Autowired
     private FuncionarioClient funcionarioClient;
+
+    @Autowired
     private MascotaClient mascotaClient;
 
     public SaludDetalleDto getSaludconFuncionarioMascota(Integer id) {
-
         HistorialDiagnostico historialDiagnostico = historialDiagnosticoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Historial no encontrado con id: " + id));
 
-        FuncionarioDto funcionario = funcionarioClient.obtenerFuncionario(historialDiagnostico.getRutFuncionario()); // ✅ RUT
-
-
-        MascotaDto mascota = mascotaClient.obtenerMascota(historialDiagnostico.getIdMascota()); // ✅ id mascota
+        FuncionarioDto funcionario = funcionarioClient.obtenerFuncioDto(historialDiagnostico.getIdFuncionario());
+        MascotaDto mascota = mascotaClient.obtenerMascotaDto(historialDiagnostico.getIdMascota());
 
         SaludDetalleDto dto = new SaludDetalleDto();
         dto.setId(historialDiagnostico.getId());

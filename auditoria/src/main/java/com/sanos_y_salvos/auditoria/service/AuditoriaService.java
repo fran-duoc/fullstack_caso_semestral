@@ -17,8 +17,9 @@ import java.util.Optional;
 
 @Service
 public class AuditoriaService {
-
+    @Autowired
     private AuditoriaRepository auditoriaRepository;
+
     public List<Auditoria> getAuditorias() {
         return auditoriaRepository.findAll();
     }
@@ -41,8 +42,8 @@ public class AuditoriaService {
 
     @Autowired
     private ComunaClient comunaClient;
-    public AuditoriaDetalleDto getAuditoriaConComuna(Integer id) {
 
+    public AuditoriaDetalleDto getAuditoriaConComuna(Integer id) {
         Auditoria auditoria = auditoriaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Auditoría no encontrada con id: " + id));
 
@@ -50,14 +51,15 @@ public class AuditoriaService {
 
         AuditoriaDetalleDto dto = new AuditoriaDetalleDto();
         dto.setIdTrazabilidad(auditoria.getIdTrazabilidad());
+
         dto.setPNombre(auditoria.getPNombre());
         dto.setSNombre(auditoria.getSNombre());
         dto.setApPaterno(auditoria.getApPaterno());
         dto.setApMaterno(auditoria.getApMaterno());
         dto.setAccion(auditoria.getAccion());
+
         dto.setComuna(comuna);
 
         return dto;
     }
-
 }

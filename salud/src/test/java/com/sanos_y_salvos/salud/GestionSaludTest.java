@@ -121,7 +121,7 @@ public class GestionSaludTest {
         historialDiagnostico.setObservaciones(faker.educator().course());
         historialDiagnostico.setFechaAtencion(LocalDate.EPOCH);
         historialDiagnostico.setId(5);
-        historialDiagnostico.setRutFuncionario("22111111");
+        historialDiagnostico.setIdFuncionario(1);
         historialDiagnostico.setIdMascota(5);
 
         //ACT
