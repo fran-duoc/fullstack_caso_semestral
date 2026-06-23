@@ -1,0 +1,78 @@
+# RUTAS FIJAS
+
+server:
+  port: 8070
+
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: auditorias
+            uri: http://localhost:8089
+            predicates:
+              - Path=/api/v1/auditorias/**
+
+          - id: alertas
+            uri: http://localhost:8079
+            predicates:
+              - Path=/api/v1/alertas/**
+          - id: duenios
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/duenios/**
+          - id: institucion
+            uri: http://localhost:8083
+            predicates:
+              - Path=/api/v1/institucion/**
+          - id: tipo
+            uri: http://localhost:8083
+            predicates:
+              - Path=/api/v1/tipo/**
+          - id: comunas
+            uri: http://localhost:8088
+            predicates:
+              - Path=/api/v1/comunas/**
+          - id: provincias
+            uri: http://localhost:8088
+            predicates:
+              - Path=/api/v1/provincias/**
+          - id: regiones
+            uri: http://localhost:8088
+            predicates:
+              - Path=/api/v1/regiones/**
+          - id: mascotas
+            uri: http://localhost:8085
+            predicates:
+              - Path=/api/v1/mascotas/**
+          - id: sexos
+            uri: http://localhost:8085
+            predicates:
+              - Path=/api/v1/sexos/**
+          - id: cargos
+            uri: http://localhost:8086
+            predicates:
+              - Path=/api/v1/cargos/**
+          - id: funcionarios
+            uri: http://localhost:8086
+            predicates:
+              - Path=/api/v1/funcionarios/**
+          - id: reportes
+            uri: http://localhost:8087
+            predicates:
+              - Path=/api/v1/reportes/**
+          - id: historial
+            uri: http://localhost:8091
+            predicates:
+              - Path=/api/v1/historial/**
+          - id: especies
+            uri: http://localhost:8084
+            predicates:
+              - Path=/api/v1/especies/**
+          - id: razas
+            uri: http://localhost:8084
+            predicates:
+              - Path=/api/v1/razas/**

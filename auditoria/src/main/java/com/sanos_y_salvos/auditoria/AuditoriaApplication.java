@@ -1,0 +1,15 @@
+package com.sanos_y_salvos.auditoria;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient    // <- UNICA anotacion necesaria
+public class AuditoriaApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AuditoriaApplication.class, args);
+	}
+
+}
