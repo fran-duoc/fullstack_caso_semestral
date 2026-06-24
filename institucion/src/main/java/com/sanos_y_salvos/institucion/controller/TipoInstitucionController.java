@@ -58,7 +58,8 @@ public class TipoInstitucionController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8083/api/v1/tipo/{id}", "buscar-tipo-por-su-id")
+                Link.of("http://localhost:8083/api/v1/tipo/{id}",
+                        "buscar-tipo-por-su-id")
         );
         return model;
     }
@@ -88,7 +89,7 @@ public class TipoInstitucionController {
         model.add(
                 Link.of(
                         "http://localhost:8083/api/v1/tipo",
-                        "todas-los-tipos"
+                        "todos-los-tipos"
                 )
         );
         return model;

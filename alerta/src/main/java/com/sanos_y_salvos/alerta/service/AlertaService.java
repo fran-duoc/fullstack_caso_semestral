@@ -1,19 +1,13 @@
 package com.sanos_y_salvos.alerta.service;
 
-import com.sanos_y_salvos.alerta.client.DuenioClient;
+import com.sanos_y_salvos.alerta.client.ReporteClient;
 import com.sanos_y_salvos.alerta.dto.AlertaDetalleDto;
-import com.sanos_y_salvos.alerta.dto.DuenioDTO;
 import com.sanos_y_salvos.alerta.dto.ReporteDTO;
 import com.sanos_y_salvos.alerta.model.Alerta;
 import com.sanos_y_salvos.alerta.repository.AlertaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,20 +37,21 @@ public class AlertaService {
     }
 
     @Autowired
-    private DuenioClient duenioClient;
+    private ReporteClient reporteClient;
 
-    public AlertaDetalleDto getAlertaConDuenio(Integer id) {
+    public AlertaDetalleDto getAlertaReporte(Integer id) {
+
         Alerta alerta = alertaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Alerta no encontrada con id: " + id));
 
-
-        DuenioDTO duenio = duenioClient.obtenerDuenio(alerta.getIdReporte()); // ajusta según tu modelo
+        ReporteDTO reporte = reporteClient.obtenerReporte(alerta.getIdReporte());
 
         AlertaDetalleDto dto = new AlertaDetalleDto();
         dto.setIdAlerta(alerta.getIdAlerta());
         dto.setFechaEnvio(alerta.getFechaEnvio());
         dto.setMedioNotificacion(alerta.getMedioNotificacion());
-        dto.setDuenio(duenio);
+
+        dto.setReporte(reporte);
 
         return dto;
     }

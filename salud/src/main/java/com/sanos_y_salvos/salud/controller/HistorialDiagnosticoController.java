@@ -42,10 +42,12 @@ public class HistorialDiagnosticoController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8091/api/v1/historial/{id}", "buscar-historial-por-su-id")
+                Link.of("http://localhost:8091/api/v1/historial/{id}",
+                        "buscar-historial-por-su-id")
         );
         model.add(
-                Link.of("http://localhost:8091/api/v1/historial/detalle", "todos-los-historialSalud-con-detalles")
+                Link.of("http://localhost:8091/api/v1/historial/{id}/detalle",
+                        "historialSalud-con-detalles")
         );
         return model;
     }
@@ -73,11 +75,12 @@ public class HistorialDiagnosticoController {
         model.add(
                 Link.of(
                         "http://localhost:8091/api/v1/historial",
-                        "todas-los-historiales"
+                        "todos-los-historiales"
                 )
         );
         model.add(
-                Link.of("http://localhost:8091/api/v1/historial/detalles", "todos-los-historialSalud-con-detalles")
+                Link.of("http://localhost:8091/api/v1/historial/{id}/detalle",
+                        "historialSalud-con-detalles")
         );
         return model;
     }
@@ -126,40 +129,31 @@ public class HistorialDiagnosticoController {
         }
     }
 
-    @Operation(summary = "obtiene la informacion de todos los historiales de diagnostico junto a su funcionario y mascota")
-    @GetMapping("/detalle")
+    @Operation(summary = "Obtiene la información de historiales de diagnóstico junto a su funcionario y mascota")
+    @GetMapping("/{id}/detalle")
     public ResponseEntity<?> listarDetalles(@PathVariable Integer id) {
-        try {
-            // Intentamos obtener el detalle del servicio
-            SaludDetalleDto detalle = historialDiagnosticoService.getSaludconFuncionarioMascota(id);
 
-            if (detalle == null) {
-                return ResponseEntity.noContent().build();
-            }
+            SaludDetalleDto detalle = historialDiagnosticoService.getSaludconFuncionarioMascota(id);
 
             EntityModel<SaludDetalleDto> model = EntityModel.of(detalle);
 
-            // Versión automática
+            //version automatica
             model.add(
                     linkTo(methodOn(HistorialDiagnosticoController.class).listarDetalles(id)).withSelfRel()
             );
-            // Versión manual
-            model.add(
-                    Link.of("http://localhost:8091/api/v1/historial/{id}", "buscar-historial-por-su-id")
-            );
-            model.add(
-                    Link.of("http://localhost:8091/api/v1/historial", "todas-los-historiales")
-            );
 
+            //version manual
+            model.add(
+                    Link.of("http://localhost:8091/api/v1/historial/{id}",
+                            "buscar-historial-por-su-id")
+            );
+            model.add(
+                    Link.of("http://localhost:8091/api/v1/historial",
+                            "todos-los-historiales")
+            );
             return ResponseEntity.ok(model);
-
-        } catch (Exception e) { //atrapa el error 500
-            return ResponseEntity.status(500).body("Error en el servicio: " + e.getMessage()
-                    + ". Asegúrate de que exista Funcionario y Mascota en los otros microservicios.");
-        }
-        //public SaludDetalleDto getSaludDetalleDto(){return historialDiagnosticoService.getSaludconFuncionarioMascota();}
-
     }
+    //public SaludDetalleDto getSaludDetalleDto(){return historialDiagnosticoService.getSaludconFuncionarioMascota();}
 }
 
 

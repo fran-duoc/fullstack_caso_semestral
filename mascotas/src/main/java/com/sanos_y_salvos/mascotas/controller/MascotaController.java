@@ -61,10 +61,14 @@ public class MascotaController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8085/api/v1/mascotas/{id}", "buscar-mascota-por-su-id")
+                Link.of("http://localhost:8085/api/v1/mascotas/{id}",
+                        "buscar-mascota-por-su-id")
         );
         model.add(
-                Link.of("http://localhost:8085/api/v1/mascotas/detalles", "todas-las-mascotas-con-detalles")
+                Link.of(
+                        "http://localhost:8085/api/v1/mascotas/{id}/detalle",
+                        "mascota-con-duenio-raza"
+                )
         );
 
         return model;
@@ -80,7 +84,7 @@ public class MascotaController {
     //    }
     //}
 
-    @Operation(summary = "busca la informacin de una mascota por su id")
+    @Operation(summary = "busca la informacion de mascota por su id")
     @GetMapping("/{id}")
     public EntityModel<Mascota> getMascota(@PathVariable Integer id){
         Mascota mascota = mascotaService.getMascota(id).orElseThrow();
@@ -102,8 +106,8 @@ public class MascotaController {
         );
         model.add(
                 Link.of(
-                        "http://localhost:8085/api/v1/mascotas/detalles",
-                        "todas-las-mascotas-con-detalles"
+                        "http://localhost:8085/api/v1/mascotas/{id}/detalle",
+                        "mascota-con-duenio-raza"
                 )
         );
         return model;
@@ -149,31 +153,29 @@ public class MascotaController {
         }
     }
 
-    @Operation(summary = "conexion entre mascotas y dueño")
-    @GetMapping("/detalles")
-    public ResponseEntity<?> listarDetalles(@PathVariable Integer id) {
-            MascotaDetalleDTO detalle = mascotaService.getMascotaDetalle(id);
+    @Operation(summary = "mascotas con duenio y raza")
+    @GetMapping("/{id}/detalle")
+    public ResponseEntity<EntityModel<MascotaDetalleDTO>> listarDetalles(@PathVariable Integer id) {
 
-            if (detalle == null) {
-                return ResponseEntity.noContent().build();
-            }
+        MascotaDetalleDTO detalle = mascotaService.getMascotaDetalle(id);
 
-            EntityModel<MascotaDetalleDTO> model = EntityModel.of(detalle);
+        EntityModel<MascotaDetalleDTO> model = EntityModel.of(detalle);
 
+        // 3. Link autom
+        model.add(
+                linkTo(methodOn(MascotaController.class).listarDetalles(id)).withSelfRel()
+        );
 
-            model.add(
-                    linkTo(methodOn(MascotaController.class).listarDetalles(id)).withSelfRel()
-            );
+        model.add(
+                Link.of("http://localhost:8085/api/v1/mascotas/{id}",
+                        "buscar-mascota-por-su-id")
+        );
+        model.add(
+                Link.of("http://localhost:8085/api/v1/mascotas",
+                        "todas-las-mascotas")
+        );
 
-            model.add(
-                    Link.of("http://localhost:8085/api/v1/mascotas/{id}", "buscar-mascota-por-su-id")
-            );
-            model.add(
-                    Link.of("http://localhost:8085/api/v1/mascotas", "todas-las-mascotas")
-            );
-
-            return ResponseEntity.ok(model);
-
+        return ResponseEntity.ok(model);
     }
     //@Operation(summary = "conexion entre mascotas y dueño")
     //@GetMapping("/detalles")

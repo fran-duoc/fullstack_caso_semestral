@@ -61,10 +61,12 @@ public class FuncionarioController {
         );
     //version manual
         model.add(
-                Link.of("http://localhost:8086/api/v1/funcionarios/{id}", "buscar-funcionarios-por-su-id")
+                Link.of("http://localhost:8086/api/v1/funcionarios/{id}",
+                        "buscar-funcionarios-por-su-id")
                 );
         model.add(
-                Link.of("http://localhost:8086/api/v1/funcionarios/{id}/institucion", "buscar-funcionario-con-su-institucion")
+                Link.of("http://localhost:8086/api/v1/funcionarios/{id}/detalle",
+                        "buscar-funcionario-con-institucion")
         );
 
         return model;
@@ -93,10 +95,12 @@ public class FuncionarioController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8086/api/v1/funcionarios", "todos-los-funcionarios")
+                Link.of("http://localhost:8086/api/v1/funcionarios",
+                        "todos-los-funcionarios")
         );
         model.add(
-                Link.of("http://localhost:8086/api/v1/funcionarios/{id}/institucion", "buscar-funcionario-con-su-institucion")
+                Link.of("http://localhost:8086/api/v1/funcionarios/{id}/detalle",
+                        "buscar-funcionario-con-institucion")
         );
         return model;
     }
@@ -144,27 +148,27 @@ public class FuncionarioController {
     }
 
     //conexion de funcionario con institucion
-    @Operation(summary = "Obtiene la información de un funcionario junto a su institución por ID")
-    @GetMapping("/{id}/institucion")
+    @Operation(summary = "Obtiene la información de funcionario y su institución")
+    @GetMapping("/{id}/detalle")
     public ResponseEntity<EntityModel<PersonalDetalleDTO>> obtenerPersonalConInstitucion(
             @PathVariable Integer id) {
 
         PersonalDetalleDTO detalle = funcionarioService.getPersonalConInsti(id);
 
         EntityModel<PersonalDetalleDTO> model = EntityModel.of(detalle);
-
+        //version automatica
         model.add(
-                linkTo(methodOn(FuncionarioController.class).obtenerPersonalConInstitucion(id))
-                        .withSelfRel()
+                linkTo(methodOn(FuncionarioController.class).obtenerPersonalConInstitucion(id)).withSelfRel()
         );
-
+        //version manual
         model.add(
-                Link.of("http://localhost:8086/api/v1/funcionarios", "todos-los-funcionarios")
+                Link.of("http://localhost:8086/api/v1/funcionarios",
+                        "todos-los-funcionarios")
         );
         model.add(
-                Link.of("http://localhost:8086/api/v1/funcionarios/{id}", "buscar-funcionario-por-su-id")
+                Link.of("http://localhost:8086/api/v1/funcionarios/{id}",
+                        "buscar-funcionario-por-su-id")
         );
-
         return ResponseEntity.ok(model);
     }
 }

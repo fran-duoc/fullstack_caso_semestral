@@ -45,15 +45,12 @@ public class DuenioService {
     private ComunaClient comunaClient;
 
     public DuenioDetalleDTO getDuenioConComuna(Integer id) {
-        Duenio duenio =
-                duenioRepository.findById(id).orElse(null);
+        Duenio duenio = duenioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dueño no encontrado con id: " + id));
 
-        ComunaDTO comuna =
-                comunaClient.obtenerComuna(duenio.getIdComuna());
+        ComunaDTO comunaDto = comunaClient.obtenerComuna(duenio.getIdComuna());
 
-        DuenioDetalleDTO dto =
-                new DuenioDetalleDTO();
-
+        DuenioDetalleDTO dto = new DuenioDetalleDTO();
         dto.setIdDuenio(duenio.getIdDuenio());
         dto.setRun(Integer.valueOf(duenio.getRun()));
         dto.setDvrun(duenio.getDvrun());
@@ -64,7 +61,7 @@ public class DuenioService {
         dto.setFono(duenio.getTelefono());
         dto.setEmail(duenio.getEmail());
 
-        dto.setComuna(comuna);
+        dto.setComuna(comunaDto);
 
         return dto;
     }

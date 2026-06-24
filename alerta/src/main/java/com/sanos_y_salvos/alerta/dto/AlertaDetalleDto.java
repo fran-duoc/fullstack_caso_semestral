@@ -8,6 +8,5 @@ public class AlertaDetalleDto {
     private Integer idAlerta;
     private LocalDateTime fechaEnvio;
     private String medioNotificacion;
-    private DuenioDTO duenio;
     private ReporteDTO reporte;
 }

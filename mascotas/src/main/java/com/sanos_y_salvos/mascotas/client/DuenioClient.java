@@ -1,21 +1,22 @@
-package com.sanos_y_salvos.salud.client;
+package com.sanos_y_salvos.mascotas.client;
 
-import com.sanos_y_salvos.salud.dto.FuncionarioDto;
+
+import com.sanos_y_salvos.mascotas.dto.DuenioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
-public class FuncionarioClient {
+public class DuenioClient {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
-    public FuncionarioDto obtenerFuncioDto(Integer id) {
+    public DuenioDTO obtenerDuenioDto(Integer id) {
         return webClientBuilder.build()
                 .get()
-                .uri("http://localhost:8086/api/v1/funcionarios/" + id)
+                .uri("http://localhost:8090/api/v1/duenios/" + id)
                 .retrieve()
-                .bodyToMono(FuncionarioDto.class)
+                .bodyToMono(DuenioDTO.class)
                 .block();
     }
 }

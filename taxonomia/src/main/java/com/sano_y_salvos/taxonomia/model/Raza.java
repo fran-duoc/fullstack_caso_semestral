@@ -22,7 +22,7 @@ public class Raza {
 
     @NotBlank(message = "El nombre de la raza no puede estar en blanco.")
     @Max(value = 150, message = "El nombre no puede ser mas de 150 caracteres")
-    @Column(name = "nombre")
+    @Column(name = "nombre_raza")
     private String nombreRaza;
 
     @ManyToOne

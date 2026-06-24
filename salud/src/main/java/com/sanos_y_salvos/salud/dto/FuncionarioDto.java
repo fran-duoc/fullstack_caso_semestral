@@ -6,7 +6,14 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
+@JsonPropertyOrder({
 
+        "idFuncionario",
+        "runFuncionario",
+        "dvRun",
+        "pNombre",
+        "apPaterno"
+})
 public class FuncionarioDto {
     private Integer idFuncionario;
     private String runFuncionario;

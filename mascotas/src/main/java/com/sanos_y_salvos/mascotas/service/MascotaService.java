@@ -1,5 +1,6 @@
 package com.sanos_y_salvos.mascotas.service;
 
+import com.sanos_y_salvos.mascotas.client.DuenioClient;
 import com.sanos_y_salvos.mascotas.client.TaxonomiaClient;
 import com.sanos_y_salvos.mascotas.dto.DuenioDTO;
 import com.sanos_y_salvos.mascotas.dto.MascotaDetalleDTO;
@@ -45,33 +46,27 @@ public class MascotaService {
     @Autowired
     private TaxonomiaClient taxonomiaClient;
 
-    public MascotaDetalleDTO getMascotaDetalle(Integer id){
+    @Autowired
+    private DuenioClient duenioClient;
 
-        Mascota mascota =
-                mascotaRepository.findById(id).orElse(null);
+    public MascotaDetalleDTO getMascotaDetalle(Integer id) {
+        Mascota mascota = mascotaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mascota no encontrada con id: " + id));
 
-        if (mascota == null) {
-            return null;
-        }
+        RazaDTO razaDto = taxonomiaClient.obtenerRazaDto(mascota.getIdRaza());
+        DuenioDTO duenioDto = duenioClient.obtenerDuenioDto(mascota.getIdDuenio());
 
-        RazaDTO razaDTO =
-                taxonomiaClient.obtenerRaza(mascota.getIdRaza());
-
-        DuenioDTO duenioDTO =
-                taxonomiaClient.obtenerDuenio(mascota.getIdDuenio());
-
-        MascotaDetalleDTO dto =
-                new MascotaDetalleDTO();
-
+        MascotaDetalleDTO dto = new MascotaDetalleDTO();
         dto.setIdMascota(mascota.getIdMascota());
         dto.setNombreMascota(mascota.getNombreMascota());
-        dto.setRaza(razaDTO);
         dto.setColor(mascota.getColor());
         dto.setChip(mascota.getChip());
-        dto.setDuenio(duenioDTO);
         dto.setEdad(mascota.getEdad());
         dto.setDiagnostico(mascota.getDiagnostico());
         dto.setSexo(mascota.getSexo());
+
+        dto.setRaza(razaDto);
+        dto.setDuenio(duenioDto);
 
         return dto;
     }

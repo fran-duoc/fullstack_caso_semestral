@@ -43,7 +43,7 @@ public class CargoController {
         return errors;
     }
 
-    @Operation(summary = "obtiene la informacion de todas los cargos")
+    @Operation(summary = "obtiene la informacion de todos los cargos")
     @GetMapping
     public CollectionModel<Cargo> listar() {
         List<Cargo> cargos = cargoService.getCargos();
@@ -58,10 +58,12 @@ public class CargoController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8086//api/v1/cargos/{id}", "buscar-cargo-por-su-id")
+                Link.of("http://localhost:8086//api/v1/cargos/{id}",
+                        "buscar-cargo-por-su-id")
         );
         model.add(
-                Link.of("http://localhost:8086/api/v1/cargos", "todas-los-cargos")
+                Link.of("http://localhost:8086/api/v1/cargos",
+                        "todos-los-cargos")
         );
 
         return model;
@@ -89,7 +91,8 @@ public class CargoController {
         );
         //version manual
         model.add(
-                Link.of("http://localhost:8086//api/v1/cargos/{id}", "buscar-cargo-por-su-id")
+                Link.of("http://localhost:8086//api/v1/cargos/{id}",
+                        "buscar-cargo-por-su-id")
         );
         model.add(
                 Link.of(
